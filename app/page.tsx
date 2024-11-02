@@ -1,6 +1,44 @@
-import Image from "next/image";
 
-export default function Home() {
+import Image from "next/image";
+import { login, getAccessToken} from '@/app/utils/api/auth'
+import { fetchUserDetails, listUsers, updateUserDetails } from '@/app/utils/api/userApi';
+
+export default async function Home() {
+  try {
+    console.log('Attempting to log in...');
+
+    // Replace with valid credentials
+    const loginResponse = await login('deepanshu23@iiserb.ac.in', 'HungryNewton');
+    console.log('Login successful:', loginResponse);
+
+    // Retrieve the access token
+    const token = getAccessToken();
+    console.log('Access token obtained:', token);
+
+    // Example: Fetch a specific user's details
+    const userId = '6721c9d70520ceaaa8f8014c'; // Replace with a valid user ID
+    console.log(`Fetching details for user ID: ${userId}...`);
+    const userDetails = await fetchUserDetails(userId);
+    console.log('User details:', userDetails);
+
+    // Example: List all users
+    console.log('Fetching list of users...');
+    const usersList = await listUsers();
+    console.log('List of users:', usersList);
+
+    // Example: Update a user's details
+    console.log(`Updating details for user ID: ${userId}...`);
+    const updatedUser = await updateUserDetails(userId, { age: 25 });
+    console.log('Updated user details:', updatedUser);
+
+    // Example: Delete a user
+    console.log(`Deleting user ID: ${userId}...`);
+    // await deleteUser(userId);
+    console.log(`User ID: ${userId} has been deleted.`);
+
+  } catch (error) {
+    console.error('Error encountered:', error);
+  }
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">

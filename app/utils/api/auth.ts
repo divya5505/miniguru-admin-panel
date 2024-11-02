@@ -10,7 +10,8 @@ export const login = async (email: string, password: string): Promise<void> => {
     const response = await axios.post(`${baseURL}/auth/login`, { email, password });
     accessToken = response.data.accessToken;
     refreshToken = response.data.refreshToken;
-  } catch (error: any) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
     throw new UnauthorizedError('Invalid credentials');
   }
 };
@@ -19,7 +20,8 @@ export const refreshAccessToken = async (): Promise<void> => {
   try {
     const response = await axios.post(`${baseURL}/auth/refresh-token`, { refreshToken });
     accessToken = response.data.accessToken;
-  } catch (error: any) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
     throw new UnauthorizedError('Failed to refresh token');
   }
 };
