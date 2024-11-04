@@ -74,7 +74,7 @@ const handleError = (error): never => {
   if (error.response) {
     switch (error.response.status) {
       case 404:
-        throw new NotFoundError(`Resource not found`);
+        throw new NotFoundError(`Product not found`);
       case 403:
         throw new ForbiddenError(`Access is forbidden`);
       default:
