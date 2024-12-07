@@ -1,6 +1,6 @@
-import axios, { AxiosRequestConfig, InternalAxiosRequestConfig, AxiosHeaders } from 'axios';
-import { refreshAccessToken, getAccessToken } from './auth';
-import { NotFoundError, ServiceError, UnauthorizedError, ForbiddenError } from './error';
+import axios, { InternalAxiosRequestConfig, AxiosHeaders } from 'axios';
+import {  getAccessToken } from './auth';
+// import { NotFoundError, ServiceError, UnauthorizedError, ForbiddenError } from './error';
 
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || '';
 
@@ -12,7 +12,7 @@ export const apiClient = axios.create({
 });
 
 // Request interceptor
-apiClient.interceptors.request.use(async (config: InternalAxiosRequestConfig<any>) => {
+apiClient.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   const token = getAccessToken();
 
   // Ensure headers exist and are properly typed
