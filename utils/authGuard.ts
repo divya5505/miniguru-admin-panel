@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { validateToken, decodeToken } from '@/utils/auth';
 
-export function adminAuthGuard(request: NextRequest) {
+export async function adminAuthGuard(request: NextRequest) {
   // Get the token from cookies
   const token = request.cookies.get('auth_token')?.value;
 
@@ -18,7 +18,7 @@ export function adminAuthGuard(request: NextRequest) {
 
   // Decode token and check user role
   try {
-    const decoded = decodeToken(token);
+    const decoded = await decodeToken(token);
     
     // Check if user is an admin
     if (decoded.role !== 'ADMIN') {

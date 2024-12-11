@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { UnauthorizedError } from './error';
+import { setAuthCookie } from '../auth';
 
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || '';
 let accessToken = '';
@@ -10,6 +11,7 @@ export const login = async (email: string, password: string): Promise<void> => {
     const response = await axios.post(`${baseURL}/auth/login`, { email, password });
     accessToken = response.data.accessToken;
     refreshToken = response.data.refreshToken;
+    setAuthCookie(accessToken);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     throw new UnauthorizedError('Invalid credentials');

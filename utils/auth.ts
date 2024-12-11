@@ -1,3 +1,4 @@
+"use server"
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 
@@ -11,10 +12,11 @@ interface JwtPayload {
 // Cookie and JWT constants
 const TOKEN_COOKIE_NAME = 'auth_token';
 const COOKIE_EXPIRATION_TIME = 60 * 60; // 1 hour expiration in seconds
-const cookieStore = await cookies();
+
 
 // Function to set the authentication cookie
 export async function setAuthCookie(token: string): Promise<void> {
+  const cookieStore = await cookies();
   cookieStore.set(TOKEN_COOKIE_NAME, token, {
     httpOnly: true,       // Prevents access to cookie via JavaScript
     secure: process.env.NODE_ENV === 'production',  // Only over HTTPS in production
@@ -26,17 +28,19 @@ export async function setAuthCookie(token: string): Promise<void> {
 
 // Function to get the authentication token from the cookie
 export async function getAuthToken(): Promise<string | null> {
+  const cookieStore = await cookies();
   const cookie = cookieStore.get(TOKEN_COOKIE_NAME);
   return cookie?.value || null;
 }
 
 // Function to clear the authentication cookie
 export async function clearAuthCookie(): Promise<void> {
+  const cookieStore = await cookies();
   cookieStore.delete(TOKEN_COOKIE_NAME);
 }
 
 // Function to decode the JWT token (without verifying signature)
-export function decodeToken(token: string): JwtPayload | null {
+export async function  decodeToken(token: string) : Promise<JwtPayload> {
   try {
     // Decode without verifying signature
     const decoded = jwt.decode(token) as JwtPayload;
@@ -53,7 +57,7 @@ export function decodeToken(token: string): JwtPayload | null {
 }
 
 // Function to check if the token is expired
-export function isTokenExpired(expirationTime: number): boolean {
+export async function isTokenExpired(expirationTime: number) {
   const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
   return expirationTime < currentTime; // Check if expiration time has passed
 }
@@ -67,7 +71,7 @@ export async function checkAdminAuth(): Promise<JwtPayload> {
   }
 
   // Decode the token to check the role and expiration (no signature validation here)
-  const decoded = decodeToken(token);
+  const decoded = await decodeToken(token);
 
   if (!decoded) {
     throw new Error('Invalid token');
@@ -87,8 +91,8 @@ export async function checkAdminAuth(): Promise<JwtPayload> {
 }
 
 
-export function validateToken(token: string): boolean {
-  const decoded = decodeToken(token);
+export async function validateToken(token: string): Promise<boolean> {
+  const decoded = await decodeToken(token);
 
   if (!decoded) {
     return false; // Invalid token if decoding fails

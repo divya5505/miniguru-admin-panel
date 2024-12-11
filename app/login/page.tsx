@@ -2,12 +2,13 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-// import { login } from '@/utils/api/auth'
+import { login } from '@/utils/api/auth'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-// import { UnauthorizedError } from '@/utils/api/error'
+import { UnauthorizedError } from '@/utils/api/error'
+import { getAuthToken, validateToken } from '@/utils/auth'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -20,15 +21,18 @@ export default function LoginPage() {
     setError('')
 
     try {
-    //   await login(email, password)
+       await login(email, password);
+       const token = await getAuthToken();
+        if (!validateToken(token)) {
+          throw new UnauthorizedError('Invalid token');
+        }
       router.push('/')
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
-    //   if (err instanceof UnauthorizedError) {
-    //     setError('Invalid email or password')
-    //   } else {
-    //     setError('An unexpected error occurred')
-    //   }
+      if (err instanceof UnauthorizedError) {
+        setError('Invalid email or password')
+      } else {
+        setError(err.message)
+      }
     }
   }
 

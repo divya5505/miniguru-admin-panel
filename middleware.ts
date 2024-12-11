@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { adminAuthGuard } from '@/utils/authGuard';
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   // Public routes that don't require authentication
   const publicPaths = ['/login', '/unauthorized'];
 
@@ -12,15 +12,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Check for admin authentication on protected routes
-  if (request.nextUrl.pathname.startsWith('/users')) {
-    return adminAuthGuard(request) || NextResponse.next();
-  }
 
-  return NextResponse.next();
+  return await adminAuthGuard(request) || NextResponse.next();
 }
 
 // Specify which routes to protect
 export const config = {
-  matcher: ['/users', '/users/:path*', '/dashboard']
+  matcher: ['/users', '/users/:path*', '/', '/projects', '/projects/:path*','/orders', '/orders/:path*','/products', '/products/:path*','/categories', '/categories/:path*',],
 }
