@@ -1,6 +1,6 @@
 import { apiClient } from './apiClient';
 import { NotFoundError, ForbiddenError, ServiceError } from './error'; // Import custom error classes
-import { Project, ProjectCategory } from '@/app/types/project';
+import { Project, ProjectCategory } from '@/components/types/project';
 
 // Get all projects
 export const getAllProjects = async (): Promise<Project[]> => {

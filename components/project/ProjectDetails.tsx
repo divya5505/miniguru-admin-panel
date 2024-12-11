@@ -1,4 +1,4 @@
-import { Project } from '@/app/types/project'
+import { Project } from '@/components/types/project'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Image from 'next/image'
 

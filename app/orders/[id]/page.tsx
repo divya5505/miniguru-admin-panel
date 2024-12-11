@@ -6,7 +6,7 @@ import { AdminLayout } from '@/components/AdminLayout'
 import { OrderDetails } from '@/components/order/OrderDetails'
 import { Button } from "@/components/ui/button"
 import { dummyOrders } from '@/data/dummyData'
-import { Order } from '@/app/types/order'
+import { Order } from '@/components/types/order'
 
 export default function OrderDetailPage() {
   const params = useParams()

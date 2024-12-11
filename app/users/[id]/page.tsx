@@ -7,7 +7,7 @@ import { UserDetails } from '@/components/user/UserDetails'
 import { UserEditForm } from '@/components/user/UserEditForm'
 import { Button } from "@/components/ui/button"
 import { dummyUsers } from '@/data/dummyUsers'
-import { User } from '@/app/types/users'
+import { User } from '@/components/types/users'
 
 export default function UserDetailPage() {
   const params = useParams()

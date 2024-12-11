@@ -4,8 +4,8 @@ import { AdminLayout } from '@/components/AdminLayout'
 import { CategoryList } from '@/components/category/CategoryList'
 import { CategoryForm } from '@/components/category/CategoryForm'
 import { dummyProductCategories, dummyProjectCategories } from '@/data/dummyData'
-import {  ProjectCategory } from '@/app/types/project'
-import { ProductCategory } from '@/app/types/product'
+import {  ProjectCategory } from '@/components/types/project'
+import { ProductCategory } from '@/components/types/product'
 import { Button } from "@/components/ui/button"
 
 export default function CategoriesPage() {

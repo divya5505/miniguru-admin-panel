@@ -6,7 +6,7 @@ import { AdminLayout } from '@/components/AdminLayout'
 import { ProjectDetails } from '@/components/project/ProjectDetails'
 import { Button } from "@/components/ui/button"
 import { dummyProjects } from '@/data/dummyData'
-import { Project } from '@/app/types/project'
+import { Project } from '@/components/types/project'
 
 export default function ProjectDetailPage() {
   const params = useParams()

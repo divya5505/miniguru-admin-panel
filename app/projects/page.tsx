@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { AdminLayout } from '@/components/AdminLayout'
 import { ProjectList } from '@/components/project/ProjectList'
 import { dummyProjects } from '@/data/dummyData'
-import { Project } from '@/app/types/project'
+import { Project } from '@/components/types/project'
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>(dummyProjects)

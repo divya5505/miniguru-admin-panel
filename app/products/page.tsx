@@ -5,7 +5,7 @@ import { AdminLayout } from '@/components/AdminLayout'
 import { ProductList } from '@/components/product/ProductList'
 import { ProductForm } from '@/components/product/ProductForm'
 import { dummyProducts } from '@/data/dummyData'
-import { Product } from '@/app/types/product'
+import { Product } from '@/components/types/product'
 import { Button } from "@/components/ui/button"
 
 export default function ProductsPage() {

@@ -1,6 +1,6 @@
 "use client";
 import { apiClient } from './apiClient';
-import { User } from '@/app/types/users';
+import { User } from '@/components/types/users';
 import { NotFoundError, ForbiddenError, ServiceError } from '@/app/utils/api/error'; // Import custom error classes
 
 export const fetchUserDetails = async (userId: string): Promise<User> => {

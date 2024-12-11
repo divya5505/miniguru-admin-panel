@@ -1,4 +1,4 @@
-import { Order } from "@/app/types/order";
+import { Order } from "@/components/types/order";
 import { apiClient } from "@/app/utils/api/apiClient";
 import { NotFoundError, ForbiddenError, ServiceError } from './error'; 
 

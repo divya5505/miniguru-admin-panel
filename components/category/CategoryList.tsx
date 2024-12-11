@@ -1,5 +1,5 @@
-import { ProjectCategory } from "@/app/types/project"
-import { ProductCategory } from '@/app/types/product'
+import { ProjectCategory } from "@/components/types/project"
+import { ProductCategory } from '@/components/types/product'
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 

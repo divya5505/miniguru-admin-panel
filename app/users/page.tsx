@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { AdminLayout } from '@/components/AdminLayout'
 import { UserList } from '@/components/user/UserList'
 import { dummyUsers } from '@/data/dummyUsers'
-import { User } from '@/app/types/users'
+import { User } from '@/components/types/users'
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>(dummyUsers)
