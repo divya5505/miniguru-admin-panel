@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { NotFoundError, ForbiddenError, ServiceError } from '@/app/utils/api/error'
+import { NotFoundError, ForbiddenError, ServiceError } from '@/utils/api/error'
 
 export function useErrorHandler() {
   const [error, setError] = useState<string | null>(null)

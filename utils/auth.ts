@@ -9,7 +9,7 @@ interface JwtPayload {
 }
 
 // Cookie and JWT constants
-const TOKEN_COOKIE_NAME = 'admin_auth_token';
+const TOKEN_COOKIE_NAME = 'auth_token';
 const COOKIE_EXPIRATION_TIME = 60 * 60; // 1 hour expiration in seconds
 const cookieStore = await cookies();
 
@@ -85,3 +85,25 @@ export async function checkAdminAuth(): Promise<JwtPayload> {
 
   return decoded;
 }
+
+
+export function validateToken(token: string): boolean {
+  const decoded = decodeToken(token);
+
+  if (!decoded) {
+    return false; // Invalid token if decoding fails
+  }
+
+  // Check if the token is expired
+  if (decoded.exp && isTokenExpired(decoded.exp)) {
+    return false; // Token is expired
+  }
+
+  // Check if the user has the required 'ADMIN' role
+  if (decoded.role !== 'ADMIN') {
+    return false; // Unauthorized if role is not 'ADMIN'
+  }
+
+  return true; // Token is valid
+}
+

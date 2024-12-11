@@ -1,5 +1,5 @@
 import { Order } from "@/components/types/order";
-import { apiClient } from "@/app/utils/api/apiClient";
+import { apiClient } from "@/utils/api/apiClient";
 import { NotFoundError, ForbiddenError, ServiceError } from './error'; 
 
 export const getAllOrders = async (): Promise<Order[]> => {
