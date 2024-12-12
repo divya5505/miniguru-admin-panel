@@ -1,14 +1,25 @@
+"use server"
 import { apiClient } from './apiClient';
 import { NotFoundError, ForbiddenError, ServiceError } from './error'; // Import custom error classes
-import { Project, ProjectCategory } from '@/components/types/project';
+import { Project, ProjectCategory, GetAllProjectsResponse } from '@/types/project';
 
-// Get all projects
-export const getAllProjects = async (): Promise<Project[]> => {
+export const getAllProjects = async (page: number = 1): Promise<GetAllProjectsResponse> => {
   try {
-    const response = await apiClient.get('/project/all');
-    return response.data.projects;
+    // Send the page parameter as a query parameter
+    const response = await apiClient.get('/project/all', {
+      params: {
+        page,  // Sending the page number as a query parameter
+      },
+    });
+
+    // Return both the projects and pagination data
+    return {
+      projects: response.data.projects,
+      pagination: response.data.pagination,
+    };
   } catch (error) {
-    handleError(error);
+    handleError(error);  // Handle any errors that occur
+    throw error;  // Rethrow the error after handling
   }
 };
 
@@ -74,5 +85,5 @@ const handleError = (error): never => {
         throw new ServiceError('An unexpected error occurred');
     }
   }
-  throw new ServiceError('An error occurred while processing the request');
+  throw new ServiceError('An error occurred while processing the request'+error.message);
 };

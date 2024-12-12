@@ -6,23 +6,55 @@ import { AdminLayout } from '@/components/AdminLayout'
 import { UserDetails } from '@/components/user/UserDetails'
 import { UserEditForm } from '@/components/user/UserEditForm'
 import { Button } from "@/components/ui/button"
-import { dummyUsers } from '@/data/dummyUsers'
-import { User } from '@/components/types/users'
+import { SkeletonCard } from '@/components/SkeletonCard'    
+import { ErrorDisplay } from '@/components/ErrorDisplay'  // Import the ErrorDisplay component
+import { User } from '@/types/users'
+import { fetchUserDetails } from '@/utils/api/userApi'
 
 export default function UserDetailPage() {
   const params = useParams()
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
   const [isEditing, setIsEditing] = useState(false)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const foundUser = dummyUsers.find(u => u.id === params.id)
-    setUser(foundUser || null)
+    const fetchUser = async (id: string) => {
+      try {
+        setLoading(true)
+        setError(null)  // Reset any previous errors
+        const foundUser = await fetchUserDetails(id)
+        setUser(foundUser || null) // If no user found, set to null
+      } catch (error) {
+        setError(error.message || 'Error fetching user details.')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    if (params?.id) {
+      fetchUser(params.id.toString()) // Pass the param ID to fetchUser
+    }
   }, [params.id])
 
-  const handleSave = (updatedUser: User) => {
-    setUser(updatedUser)
-    setIsEditing(false)
+  if (loading) {
+    return (
+      <AdminLayout>
+        <div className="space-y-4">
+          {/* Show Skeleton while loading */}
+          <SkeletonCard />
+        </div>
+      </AdminLayout>
+    )
+  }
+
+  if (error) {
+    return (
+      <AdminLayout>
+        <ErrorDisplay message={error} />
+      </AdminLayout>
+    )
   }
 
   if (!user) {
@@ -53,5 +85,10 @@ export default function UserDetailPage() {
       </div>
     </AdminLayout>
   )
-}
 
+  // Function to handle saving the edited user data
+  function handleSave(updatedUser: User) {
+    setUser(updatedUser)
+    setIsEditing(false)
+  }
+}

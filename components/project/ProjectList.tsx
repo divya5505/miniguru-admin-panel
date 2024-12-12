@@ -1,9 +1,16 @@
-import { useState } from 'react'
-import { Project } from '@/components/types/project'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import Link from 'next/link'
+import { useState } from "react";
+import { Project } from "@/types/project";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import Link from "next/link";
 
 interface ProjectListProps {
   projects: Project[];
@@ -11,11 +18,11 @@ interface ProjectListProps {
 }
 
 export function ProjectList({ projects, onDeleteProject }: ProjectListProps) {
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredProjects = projects.filter(project =>
+  const filteredProjects = projects.filter((project) =>
     project.title.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  );
 
   return (
     <div className="space-y-4">
@@ -31,7 +38,7 @@ export function ProjectList({ projects, onDeleteProject }: ProjectListProps) {
           <TableHeader>
             <TableRow>
               <TableHead>Title</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>Name</TableHead>
               <TableHead>Start Date</TableHead>
               <TableHead>End Date</TableHead>
               <TableHead>Actions</TableHead>
@@ -41,15 +48,30 @@ export function ProjectList({ projects, onDeleteProject }: ProjectListProps) {
             {filteredProjects.map((project) => (
               <TableRow key={project.id}>
                 <TableCell>{project.title}</TableCell>
-                <TableCell>{project.status}</TableCell>
-                <TableCell>{project.startDate.toLocaleDateString()}</TableCell>
-                <TableCell>{project.endDate.toLocaleDateString()}</TableCell>
+                <TableCell>{project.user.name}</TableCell>
+                <TableCell>{project.startDate.toLocaleString()}</TableCell>
+                <TableCell>
+                  {project.endDate.toLocaleString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                    second: "numeric",
+                  })}
+                </TableCell>
                 <TableCell>
                   <div className="space-x-2">
                     <Button variant="outline" size="sm" asChild>
                       <Link href={`/projects/${project.id}`}>View</Link>
                     </Button>
-                    <Button variant="destructive" size="sm" onClick={() => onDeleteProject(project.id)}>Delete</Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => onDeleteProject(project.id)}
+                    >
+                      Delete
+                    </Button>
                   </div>
                 </TableCell>
               </TableRow>
@@ -58,6 +80,5 @@ export function ProjectList({ projects, onDeleteProject }: ProjectListProps) {
         </Table>
       </div>
     </div>
-  )
+  );
 }
-

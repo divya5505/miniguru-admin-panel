@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { User } from '@/components/types/users'
+import { User } from '@/types/users'
 import { dummyUsers } from '../../data/dummyUsers'
 import { UserList } from './UserList'
 import { UserDetails } from './UserDetails'

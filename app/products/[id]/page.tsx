@@ -6,7 +6,7 @@ import { AdminLayout } from '@/components/AdminLayout'
 import { ProductForm } from '@/components/product/ProductForm'
 import { Button } from "@/components/ui/button"
 import { dummyProducts } from '@/data/dummyData'
-import { Product } from '@/components/types/product'
+import { Product } from '@/types/product'
 
 export default function ProductDetailPage() {
   const params = useParams()

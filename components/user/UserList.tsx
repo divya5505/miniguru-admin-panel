@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { User } from '@/components/types/users'
+import { User } from '@/types/users'
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -38,7 +38,6 @@ export function UserList({ users, onDeleteUser }: UserListProps) {
           <TableRow>
             <TableHead>Name</TableHead>
             <TableHead>Email</TableHead>
-            <TableHead>Role</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -47,7 +46,6 @@ export function UserList({ users, onDeleteUser }: UserListProps) {
             <TableRow key={user.id}>
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>
-              <TableCell>{user.role}</TableCell>
               <TableCell>
                 <div className="space-x-2">
                   <Button variant="outline" size="sm" asChild>

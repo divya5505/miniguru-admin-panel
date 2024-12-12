@@ -1,5 +1,6 @@
+"use server"
 import axios, { InternalAxiosRequestConfig, AxiosHeaders } from 'axios';
-import {  getAccessToken } from './auth';
+import {  getAuthToken } from '@/utils/auth';
 // import { NotFoundError, ServiceError, UnauthorizedError, ForbiddenError } from './error';
 
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || '';
@@ -13,7 +14,7 @@ export const apiClient = axios.create({
 
 // Request interceptor
 apiClient.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
-  const token = getAccessToken();
+  const token = await getAuthToken();
 
   // Ensure headers exist and are properly typed
   if (!config.headers) {

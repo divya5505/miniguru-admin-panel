@@ -1,6 +1,6 @@
-"use client";
+"use server"
 import { apiClient } from './apiClient';
-import { User } from '@/components/types/users';
+import { User } from '@/types/users';
 import { NotFoundError, ForbiddenError, ServiceError } from '@/utils/api/error'; // Import custom error classes
 
 export const fetchUserDetails = async (userId: string): Promise<User> => {
@@ -15,7 +15,7 @@ export const fetchUserDetails = async (userId: string): Promise<User> => {
         throw new ForbiddenError(`Access to user ID ${userId} is forbidden`);
       }
     }
-    throw new ServiceError('An error occurred while fetching user details');
+    throw new ServiceError(error);
   }
 };
 
@@ -38,10 +38,10 @@ export const updateUserDetails = async (userId: string, updates: Partial<User>):
 export const listUsers = async (): Promise<User[]> => {
   try {
     const response = await apiClient.get(`/admin/users/`);
-    return response.data.users;
+    return response.data.data;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    throw new ServiceError('An error occurred while listing users');
+    throw new ServiceError(error);
   }
 };
 

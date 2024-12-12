@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { ProjectCategory } from "@/components/types/project"
-import { ProductCategory } from '@/components/types/product'
+import { ProjectCategory } from "@/types/project"
+import { ProductCategory } from '@/types/product'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"

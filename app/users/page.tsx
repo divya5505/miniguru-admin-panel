@@ -1,16 +1,58 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AdminLayout } from '@/components/AdminLayout'
 import { UserList } from '@/components/user/UserList'
-import { dummyUsers } from '@/data/dummyUsers'
-import { User } from '@/components/types/users'
+import { User } from '@/types/users'
+import { listUsers } from '@/utils/api/userApi'
+import { SkeletonCard } from '@/components/SkeletonCard' // Import Skeleton component
+import { ErrorDisplay } from '@/components/ErrorDisplay' // Import Error Display component
 
 export default function UsersPage() {
-  const [users, setUsers] = useState<User[]>(dummyUsers)
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setLoading(true);
+        const usersList = await listUsers();
+        setUsers(usersList);
+      } catch (error) {
+        setError('An error occurred while fetching users.'+error.message
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   const handleDeleteUser = (userId: string) => {
-    setUsers(users.filter(user => user.id !== userId))
+    setUsers(users.filter(user => user.id !== userId));
+  };
+
+  if (loading) {
+    return (
+      <AdminLayout>
+        {/* Show skeleton loaders while data is loading */}
+        <div className="space-y-4">
+          {[...Array(5)].map((_, index) => (
+            <SkeletonCard key={index} />
+          ))}
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <AdminLayout>
+        <ErrorDisplay message={error} />
+      </AdminLayout>
+    );
   }
 
   return (
@@ -18,6 +60,5 @@ export default function UsersPage() {
       <h1 className="text-3xl font-bold mb-6">Users</h1>
       <UserList users={users} onDeleteUser={handleDeleteUser} />
     </AdminLayout>
-  )
+  );
 }
-

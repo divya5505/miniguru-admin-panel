@@ -1,6 +1,6 @@
 import { apiClient } from './apiClient';
 import { NotFoundError, ForbiddenError, ServiceError } from './error'; // Import custom error classes
-import { Product, ProductCategory } from '@/components/types/product';
+import { Product, ProductCategory } from '@/types/product';
 
 // Interface for Product Category
 
