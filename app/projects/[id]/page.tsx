@@ -24,7 +24,8 @@ export default function ProjectDetailPage() {
         setLoading(true)
         setError(null)  // Reset any previous errors
         if (params.id) {
-          const projectData = await getProjectById(id)
+          const projectData = await getProjectById(id);
+          console.log(projectData)
           setProject(projectData)
         }
       } catch (error) {

@@ -23,7 +23,7 @@ export type Project = {
 };
 
 export type Material = {
-  id: string;                    // Unique identifier for the material
+  productId: string;                    // Unique identifier for the material
   name: string | null;            // Name of the material (nullable)
   quantity: number;              // Quantity of the material
 };

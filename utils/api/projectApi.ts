@@ -27,7 +27,7 @@ export const getAllProjects = async (page: number = 1): Promise<GetAllProjectsRe
 export const getProjectById = async (projectId: string): Promise<Project> => {
   try {
     const response = await apiClient.get(`/project/${projectId}`);
-    return response.data.project;
+    return response.data;
   } catch (error) {
     handleError(error);
   }

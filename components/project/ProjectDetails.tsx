@@ -24,13 +24,13 @@ export function ProjectDetails({ project }: ProjectDetailsProps) {
           </div>
           <div>
             <h3 className="font-semibold">Duration</h3>
-            <p>{project.startDate.toLocaleDateString()} - {project.endDate.toLocaleDateString()}</p>
+            <p>{(project.startDate as Date).toLocaleString()} - {(project.endDate as Date).toLocaleString()}</p>
           </div>
           <div>
             <h3 className="font-semibold">Materials</h3>
             <ul className="list-disc list-inside">
               {project.materials.map((material) => (
-                <li key={material.id}>{material.name} (Quantity: {material.quantity})</li>
+                <li key={material.productId}>{material.name} (Quantity: {material.quantity})</li>
               ))}
             </ul>
           </div>
