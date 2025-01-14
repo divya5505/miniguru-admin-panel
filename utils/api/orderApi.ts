@@ -1,3 +1,4 @@
+"use server"
 import { Order } from "@/types/order";
 import { apiClient } from "@/utils/api/apiClient";
 import { NotFoundError, ForbiddenError, ServiceError } from './error'; 
@@ -5,7 +6,7 @@ import { NotFoundError, ForbiddenError, ServiceError } from './error';
 export const getAllOrders = async (): Promise<Order[]> => {
   try {
     const response = await apiClient.get('/admin/orders');
-    return response.data.orders;
+    return response.data;
   } catch (error) {
     handleError(error);
   }
