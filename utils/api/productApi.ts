@@ -1,9 +1,36 @@
+"use server"
 import { apiClient } from './apiClient';
 import { NotFoundError, ForbiddenError, ServiceError } from './error'; // Import custom error classes
 import { Product, ProductCategory } from '@/types/product';
 
-// Interface for Product Category
+// Get all product categories
+export const getAllProductCategories = async (): Promise<ProductCategory[]> => {
+  try {
+    const response = await apiClient.get('/products/categories/all');
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+}
+//get all products
+export const getAllProducts = async (): Promise<Product[]> => {
+  try {
+    const response = await apiClient.get('/products');
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+}
 
+// Get a product by ID
+export const getProductById = async (productId: string): Promise<Product> => {
+  try {
+    const response = await apiClient.get(`/products/${productId}`);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+}
 
 // Create a product category
 export const createProductCategory = async (name: string, icon: string): Promise<ProductCategory> => {
