@@ -5,7 +5,7 @@ import { adminAuthGuard } from '@/utils/authGuard';
 
 export async function middleware(request: NextRequest) {
   // Public routes that don't require authentication
-  const publicPaths = ['/login', '/unauthorized'];
+  const publicPaths = ['/login', '/unauthorized', "/dashboard/login"];
 
   // Skip authentication for public paths
   if (publicPaths.includes(request.nextUrl.pathname)) {

@@ -8,12 +8,12 @@ export async function adminAuthGuard(request: NextRequest) {
 
   // If no token, redirect to login
   if (!token) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(new URL('/dashboard/login', request.url));
   }
 
   // Validate token
   if (!validateToken(token)) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(new URL('/dashboard/login', request.url));
   }
 
   // Decode token and check user role
@@ -31,6 +31,6 @@ export async function adminAuthGuard(request: NextRequest) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     // Token validation failed
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(new URL('/dashboard/login', request.url));
   }
 }
