@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
    ]
 
   },
+  basePath: '/dashboard',
 };
 
 export default nextConfig;
