@@ -12,7 +12,7 @@ export interface ProductCategory {
     price: number;
     inventory: number;
     categoryId: string;
-    images: string[];
+    images: (string| File)[];
     createdAt?: string;
     updatedAt?: string;
   }

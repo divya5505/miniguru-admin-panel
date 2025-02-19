@@ -8,7 +8,7 @@ import { Product } from '@/types/product'
 import { Button } from "@/components/ui/button"
 import { SkeletonCard } from '@/components/SkeletonCard'
 import { ErrorDisplay } from '@/components/ErrorDisplay'
-import { getAllProducts } from '@/utils/api/productApi'
+import { getAllProducts, createProduct, deleteProduct } from '@/utils/api/productApi'
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([])  // State to store products
@@ -36,8 +36,16 @@ export default function ProductsPage() {
   }, [])
 
   // Handle deleting a product
-  const handleDeleteProduct = (productId: string) => {
-    setProducts(products.filter(product => product.id !== productId))
+  const handleDeleteProduct = async (productId: string) => {
+    try {
+      // Make API call to delete product
+      await deleteProduct(productId)
+      
+      // Optimistically update the UI by removing the product from state
+      setProducts(products.filter(product => product.id !== productId))
+    } catch (error) {
+      setError(error.message || 'Failed to delete product.')
+    }
   }
 
   // Handle adding a new product (shows the product form)
@@ -46,13 +54,19 @@ export default function ProductsPage() {
   }
 
   // Handle form submission for adding/updating products
-  const handleSubmitProduct = (productData: Partial<Product>) => {
-    if ('id' in productData) {
-      setProducts(products.map(p => p.id === productData.id ? { ...p, ...productData } : p))
-    } else {
-      setProducts([...products, { ...productData, id: Date.now().toString() } as Product])  // Add a new product
+  const handleSubmitProduct = async (formData: FormData) => {
+    try {
+      // Call API to create a new product
+      const newProduct = await createProduct(formData)
+
+      // Optimistically update the UI by adding the new product to state
+      setProducts(prevProducts => [...prevProducts, newProduct])
+
+      // Close the form after submission
+      setIsAddingProduct(false)
+    } catch (error) {
+      setError(error.message || 'Failed to create product.')
     }
-    setIsAddingProduct(false)  // Close the form after submission
   }
 
   // Display loading skeletons if data is still loading

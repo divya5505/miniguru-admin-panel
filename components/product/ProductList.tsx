@@ -39,12 +39,12 @@ export function ProductList({ products, onDeleteProduct }: ProductListProps) {
           {filteredProducts.map((product) => (
             <TableRow key={product.id}>
               <TableCell>{product.name}</TableCell>
-              <TableCell>${product.price.toFixed(2)}</TableCell>
+              <TableCell>₹{product.price.toFixed(2)}</TableCell>
               <TableCell>{product.inventory}</TableCell>
               <TableCell>
                 <div className="space-x-2">
                   <Button variant="outline" size="sm" asChild>
-                    <Link href={`/products/${product.id}`}>Edit</Link>
+                    <Link href={`/products/${product.id}`}>View</Link>
                   </Button>
                   <Button variant="destructive" size="sm" onClick={() => onDeleteProduct(product.id)}>Delete</Button>
                 </div>

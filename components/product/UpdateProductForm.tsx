@@ -1,3 +1,4 @@
+// UpdateProductForm.tsx
 import { useState, useEffect } from 'react'
 import { Product } from '@/types/product'
 import { ProductCategory } from '@/types/product'
@@ -8,22 +9,22 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { getAllProductCategories } from '@/utils/api/productApi'
 
-interface ProductFormProps {
-  product?: Product;
+interface UpdateProductFormProps {
+  product: Product;
   onSubmit: (product: FormData | Product) => void;
   onCancel: () => void;
 }
 
-export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
+export function UpdateProductForm({ product, onSubmit, onCancel }: UpdateProductFormProps) {
   const [formData, setFormData] = useState<Partial<Product>>({
-    name: '',
-    description: '',
-    price: 0,
-    inventory: 0,
-    categoryId: '',
+    name: product.name || '',
+    description: product.description || '',
+    price: product.price || 0,
+    inventory: product.inventory || 0,
+    categoryId: product.categoryId || '',
     images: [],
   });
-  
+
   const [categories, setCategories] = useState<ProductCategory[]>([]);
   const [error, setError] = useState<string>('');
 
@@ -41,15 +42,6 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
 
     fetchCategories();
   }, []);
-
-  useEffect(() => {
-    if (product) {
-      setFormData({
-        ...product,
-        categoryId: product.categoryId,  // Pre-populate the category dropdown if editing
-      });
-    }
-  }, [product]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -69,7 +61,7 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Construct FormData to handle image uploads
     const submitData = new FormData();
     submitData.append('name', formData.name as string);
@@ -83,63 +75,61 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
       submitData.append('images', image);
     });
 
-    console.log("Submit data \n"+ submitData);
-
     onSubmit(submitData);
   };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{product ? 'Edit Product' : 'Create Product'}</CardTitle>
+        <CardTitle>Edit Product</CardTitle>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           {error && <div className="text-red-500">{error}</div>}
-          
+
           <div>
             <Label htmlFor="name">Name</Label>
-            <Input 
-              id="name" 
-              name="name" 
-              value={formData.name} 
-              onChange={handleChange} 
-              required 
+            <Input
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
             />
           </div>
-          
+
           <div>
             <Label htmlFor="description">Description</Label>
-            <Textarea 
-              id="description" 
-              name="description" 
-              value={formData.description} 
-              onChange={handleChange} 
-              required 
+            <Textarea
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              required
             />
           </div>
-          
+
           <div>
             <Label htmlFor="price">Price</Label>
-            <Input 
-              id="price" 
-              name="price" 
-              type="number" 
-              value={formData.price} 
-              onChange={handleChange} 
-              required 
+            <Input
+              id="price"
+              name="price"
+              type="number"
+              value={formData.price}
+              onChange={handleChange}
+              required
             />
           </div>
-          
+
           <div>
             <Label htmlFor="inventory">Inventory</Label>
-            <Input 
-              id="inventory" 
-              name="inventory" 
-              type="number" 
-              value={formData.inventory} 
-              onChange={handleChange} 
-              required 
+            <Input
+              id="inventory"
+              name="inventory"
+              type="number"
+              value={formData.inventory}
+              onChange={handleChange}
+              required
             />
           </div>
 
@@ -153,7 +143,7 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
               required
             >
               <option value="">Select a category</option>
-              {categories.map(category => (
+              {categories.map((category) => (
                 <option key={category.id} value={category.name}>
                   {category.name}
                 </option>
@@ -163,16 +153,16 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
 
           <div>
             <Label htmlFor="images">Product Images</Label>
-            <Input 
-              id="images" 
-              name="images" 
-              type="file" 
-              multiple 
-              onChange={handleImageChange} 
+            <Input
+              id="images"
+              name="images"
+              type="file"
+              multiple
+              onChange={handleImageChange}
             />
           </div>
         </CardContent>
-        
+
         <CardFooter className="flex justify-between">
           <Button type="button" variant="outline" onClick={onCancel}>Cancel</Button>
           <Button type="submit">Save</Button>
