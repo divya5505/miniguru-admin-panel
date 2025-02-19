@@ -20,7 +20,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
           </div>
           <div>
             <dt className="font-semibold">Price:</dt>
-            <dd>${product.price.toFixed(2)}</dd>
+            <dd>₹{product.price.toFixed(2)}</dd>
           </div>
           <div>
             <dt className="font-semibold">Inventory:</dt>

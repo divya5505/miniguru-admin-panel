@@ -39,7 +39,7 @@ export function UserDetails({ user }: UserDetailsProps) {
           </div>
           <div>
             <dt className="font-semibold">Wallet Balance:</dt>
-            <dd>${user.wallet.balance}</dd>
+            <dd>₹{user.wallet.balance}</dd>
           </div>
           <div>
             <dt className="font-semibold">Created At:</dt>

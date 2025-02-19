@@ -46,7 +46,7 @@ export function OrderDetails({ order }: OrderDetailsProps) {
           </div>
           <div>
             <h3 className="font-semibold">Total Amount</h3>
-            <p>${order.totalAmount.toFixed(2)}</p>
+            <p>₹{order.totalAmount.toFixed(2)}</p>
           </div>
           <div>
             <h3 className="font-semibold">Payment Status</h3>
