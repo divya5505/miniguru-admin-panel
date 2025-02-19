@@ -33,7 +33,7 @@ export const getProductById = async (productId: string): Promise<Product> => {
 }
 
 // Create a product category
-export const createProductCategory = async (name: string, icon: string): Promise<ProductCategory> => {
+export const createProductCategory = async (name: string, icon: string = "default"): Promise<ProductCategory> => {
   try {
     const response = await apiClient.post('/admin/product/category', { name, icon });
     return response.data;

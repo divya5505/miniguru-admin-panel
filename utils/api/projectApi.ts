@@ -34,9 +34,21 @@ export const getProjectById = async (projectId: string): Promise<Project> => {
 };
 
 // Create a project category
-export const createProjectCategory = async (name: string, icon: string): Promise<ProjectCategory> => {
+export const createProjectCategory = async (name: string, icon: string = "default"): Promise<ProjectCategory> => {
   try {
     const response = await apiClient.post('/admin/project/category', { name, icon });
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+
+//get all project categories
+
+export const getAllProjectCategories = async (): Promise<ProjectCategory[]> => {
+  try {
+    const response = await apiClient.get('/project/categories');
     return response.data;
   } catch (error) {
     handleError(error);

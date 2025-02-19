@@ -1,58 +1,98 @@
 "use client";
-import { useState } from 'react'
-import { AdminLayout } from '@/components/AdminLayout'
-import { CategoryList } from '@/components/category/CategoryList'
-import { CategoryForm } from '@/components/category/CategoryForm'
-import { dummyProductCategories, dummyProjectCategories } from '@/data/dummyData'
-import {  ProjectCategory } from '@/types/project'
-import { ProductCategory } from '@/types/product'
-import { Button } from "@/components/ui/button"
+import { useState, useEffect } from 'react';
+import { AdminLayout } from '@/components/AdminLayout';
+import { CategoryList } from '@/components/category/CategoryList';
+import { CategoryForm } from '@/components/category/CategoryForm';
+import { Button } from "@/components/ui/button";
+
+import { getAllProductCategories, createProductCategory, deleteProductCategory, updateProductCategory } from '@/utils/api/productApi';
+import { getAllProjectCategories, createProjectCategory, deleteProjectCategory, updateProjectCategory } from '@/utils/api/projectApi';
+import { ProductCategory } from '@/types/product';
+import { ProjectCategory } from '@/types/project';
 
 export default function CategoriesPage() {
-  const [productCategories, setProductCategories] = useState(dummyProductCategories)
-  const [projectCategories, setProjectCategories] = useState(dummyProjectCategories)
-  const [isAddingCategory, setIsAddingCategory] = useState(false)
-  const [editingCategory, setEditingCategory] = useState<ProductCategory | ProjectCategory | null>(null)
-  const [categoryType, setCategoryType] = useState<'product' | 'project'>('product')
+  const [productCategories, setProductCategories] = useState<ProductCategory[]>([]);
+  const [projectCategories, setProjectCategories] = useState<ProjectCategory[]>([]);
+  const [isAddingCategory, setIsAddingCategory] = useState(false);
+  const [editingCategory, setEditingCategory] = useState<ProductCategory | ProjectCategory | null>(null);
+  const [categoryType, setCategoryType] = useState<'product' | 'project'>('product');
 
-  const handleDeleteCategory = (category: ProductCategory | ProjectCategory) => {
-    if ('id' in category) {
-      setProductCategories(productCategories.filter(c => c.id !== category.id))
-     } 
-     //else {
-    //   setProjectCategories(projectCategories.filter(c => c.id !== category.id))
-    // }
-  }
+  // Fetch product and project categories on component mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const productResponse = await getAllProductCategories();
+        setProductCategories(productResponse);
 
-  const handleAddCategory = (type: 'product' | 'project') => {
-    setCategoryType(type)
-    setIsAddingCategory(true)
-    setEditingCategory(null)
-  }
-
-  const handleEditCategory = (category: ProductCategory | ProjectCategory) => {
-    setEditingCategory(category)
-    setIsAddingCategory(false)
-    setCategoryType('id' in category ? 'product' : 'project')
-  }
-
-  const handleSubmitCategory = (categoryData: Partial<ProductCategory | ProjectCategory>) => {
-    if (editingCategory) {
-      if (categoryType === 'product') {
-        setProductCategories(productCategories.map(c => c.id === editingCategory.id ? { ...c, ...categoryData } : c))
-      } else {
-        setProjectCategories(projectCategories.map(c => c.id === editingCategory.id ? { ...c, ...categoryData } : c))
+        const projectResponse = await getAllProjectCategories();
+        setProjectCategories(projectResponse);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
       }
-    } else {
-      if (categoryType === 'product') {
-        setProductCategories([...productCategories, { ...categoryData, id: Date.now().toString() } as ProductCategory])
-      } else {
-        setProjectCategories([...projectCategories, { ...categoryData, id: Date.now().toString() } as ProjectCategory])
+    };
+
+    fetchCategories();
+  }, []);
+
+  // Handle deleting categories
+  const handleDeleteCategory = async (category: ProductCategory | ProjectCategory) => {
+    try {
+      if ('id' in category) {
+        if (categoryType === 'product') {
+          await deleteProductCategory(category.id);  // Delete from backend
+          setProductCategories(productCategories.filter(c => c.id !== category.id));  // Update local state
+        } else {
+          await deleteProjectCategory(category.id);  // Delete from backend
+          setProjectCategories(projectCategories.filter(c => c.id !== category.id));  // Update local state
+        }
       }
+    } catch (error) {
+      console.error('Error deleting category:', error);
     }
-    setIsAddingCategory(false)
-    setEditingCategory(null)
-  }
+  };
+
+  // Handle adding categories (switching between product and project)
+  const handleAddCategory = (type: 'product' | 'project') => {
+    setCategoryType(type);
+    setIsAddingCategory(true);
+    setEditingCategory(null);
+  };
+
+  // Handle editing an existing category
+  const handleEditCategory = (category: ProductCategory | ProjectCategory) => {
+    setEditingCategory(category);
+    setIsAddingCategory(false);
+    setCategoryType('id' in category ? 'product' : 'project');
+  };
+
+  // Handle category form submission (create or update)
+  const handleSubmitCategory = async (categoryData: Partial<ProductCategory | ProjectCategory>) => {
+    try {
+      if (editingCategory) {
+        // Update category
+        if (categoryType === 'product') {
+          await updateProductCategory(editingCategory.id, categoryData);  // Update backend
+          setProductCategories(productCategories.map(c => c.id === editingCategory.id ? { ...c, ...categoryData } : c));  // Update local state
+        } else {
+          await updateProjectCategory(editingCategory.id, categoryData);  // Update backend
+          setProjectCategories(projectCategories.map(c => c.id === editingCategory.id ? { ...c, ...categoryData } : c));  // Update local state
+        }
+      } else {
+        // Create new category
+        if (categoryType === 'product') {
+          const newCategory = await createProductCategory(categoryData.name);  // Create on backend
+          setProductCategories([...productCategories, newCategory]);  // Update local state
+        } else {
+          const newCategory = await createProjectCategory(categoryData.name);  // Create on backend
+          setProjectCategories([...projectCategories, newCategory]);  // Update local state
+        }
+      }
+    } catch (error) {
+      console.error('Error saving category:', error);
+    }
+    setIsAddingCategory(false);
+    setEditingCategory(null);
+  };
 
   return (
     <AdminLayout>
@@ -68,8 +108,8 @@ export default function CategoriesPage() {
           category={editingCategory || undefined}
           onSubmit={handleSubmitCategory}
           onCancel={() => {
-            setIsAddingCategory(false)
-            setEditingCategory(null)
+            setIsAddingCategory(false);
+            setEditingCategory(null);
           }}
         />
       ) : (
@@ -89,6 +129,5 @@ export default function CategoriesPage() {
         </>
       )}
     </AdminLayout>
-  )
+  );
 }
-
