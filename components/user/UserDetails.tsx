@@ -1,7 +1,5 @@
 import { User } from '@/types/users'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import Link from 'next/link'
 
 interface UserDetailsProps {
   user: User;
@@ -49,9 +47,6 @@ export function UserDetails({ user }: UserDetailsProps) {
           </div>
         </dl>
         <div className="mt-4">
-          <Button asChild>
-            <Link href={`/users/${user.id}/edit`}>Edit User</Link>
-          </Button>
         </div>
       </CardContent>
     </Card>

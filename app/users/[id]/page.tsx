@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { SkeletonCard } from '@/components/SkeletonCard'    
 import { ErrorDisplay } from '@/components/ErrorDisplay'  // Import the ErrorDisplay component
 import { User } from '@/types/users'
-import { fetchUserDetails } from '@/utils/api/userApi'
+import { fetchUserDetails , updateUserDetails } from '@/utils/api/userApi'
 
 export default function UserDetailPage() {
   const params = useParams()
@@ -87,8 +87,22 @@ export default function UserDetailPage() {
   )
 
   // Function to handle saving the edited user data
-  function handleSave(updatedUser: User) {
+  async function handleSave(updatedUser: User) {
     setUser(updatedUser)
-    setIsEditing(false)
+    // Extract the fields to update by comparing updatedUser with user
+    const updatesToUser: Partial<User> = {}
+    for (const key in updatedUser) {
+      if (updatedUser[key] !== user[key]) {
+      updatesToUser[key] = updatedUser[key]
+      }
+    }
+
+    try {
+      const res= await updateUserDetails(user.id, updatesToUser);
+      console.log(res)
+      setIsEditing(false)
+    } catch (error) {
+      setError(error.message || 'Error updating user details.')
+    }
   }
 }
