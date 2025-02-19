@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { User } from '@/types/users'
-import { dummyUsers } from '../../data/dummyUsers'
 import { UserList } from './UserList'
 import { UserDetails } from './UserDetails'
 import { UserEditForm } from './UserEditForm'
@@ -9,7 +8,7 @@ import { ErrorDisplay } from '../ErrorDisplay'
 import { useErrorHandler } from '../../hooks/useErrorHandler'
 
 export function UserManagement() {
-  const [users, setUsers] = useState<User[]>(dummyUsers)
+  const [users, setUsers] = useState<User[]>([])
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
