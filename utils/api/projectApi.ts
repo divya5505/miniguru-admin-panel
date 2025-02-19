@@ -63,10 +63,9 @@ export const deleteProjectCategory = async (categoryId: string): Promise<void> =
   }
 };
 
-export const deleteProjectById = async (projectId: string): Promise<Project> => {
+export const deleteProjectById = async (projectId: string) => {
   try {
-    const response = await apiClient.delete(`/admin/project/${projectId}`);
-    return response.data.project;
+    await apiClient.delete(`/admin/project/${projectId}`);
   } catch (error) {
     handleError(error);
   }

@@ -5,8 +5,11 @@ export type Project = {
   description: string;           // Detailed description
   startDate: Date;               // Project start date
   endDate: Date;                 // Project end date
-  thumbnailUrl: string;          // URL for the thumbnail image
-  videoUrl?: string;             // URL for the video (optional)
+  thumbnail: string;          // URL for the thumbnail image
+  video : {
+    url: string;
+    uploadedAt?: string
+  }
   materials: Material[];         // Array of materials required for the project
   status: 'active' | 'completed' | 'archived'; // Status of the project (if relevant)
   createdAt: Date;               // Timestamp when the project was created
