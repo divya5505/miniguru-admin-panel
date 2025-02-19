@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { AdminLayout } from '@/components/AdminLayout'
 import { UserList } from '@/components/user/UserList'
 import { User } from '@/types/users'
-import { listUsers } from '@/utils/api/userApi'
+import { listUsers, deleteUser } from '@/utils/api/userApi'
 import { SkeletonCard } from '@/components/SkeletonCard' // Import Skeleton component
 import { ErrorDisplay } from '@/components/ErrorDisplay' // Import Error Display component
 
@@ -30,7 +30,13 @@ export default function UsersPage() {
     fetchUsers();
   }, []);
 
-  const handleDeleteUser = (userId: string) => {
+  const handleDeleteUser = async (userId: string) => { 
+    try {
+      await deleteUser(userId);
+    } catch (error) {
+      setError('An error occurred while deleting the user.' + error.message);
+      return;
+    }
     setUsers(users.filter(user => user.id !== userId));
   };
 

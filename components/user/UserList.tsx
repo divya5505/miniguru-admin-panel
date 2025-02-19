@@ -51,7 +51,7 @@ export function UserList({ users, onDeleteUser }: UserListProps) {
                   <Button variant="outline" size="sm" asChild>
                     <Link href={`/users/${user.id}`}>View</Link>
                   </Button>
-                  <Button variant="destructive" size="sm" onClick={() => onDeleteUser(user.id)}>Delete</Button>
+                  <Button variant="destructive" size="sm" className="border-black " onClick={() => onDeleteUser(user.id)}>Delete</Button>
                 </div>
               </TableCell>
             </TableRow>

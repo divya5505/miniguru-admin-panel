@@ -50,6 +50,7 @@ export const deleteUser = async (userId: string): Promise<void> => {
     await apiClient.delete(`/admin/users/${userId}`);
     console.log(`User with ID ${userId} has been deleted successfully.`);
   } catch (error) {
+    console.log(error);
     if (error.response) {
       if (error.response.status === 404) {
         throw new NotFoundError(`User with ID ${userId} not found`);
