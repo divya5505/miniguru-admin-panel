@@ -7,7 +7,6 @@ import { SkeletonCard } from '@/components/SkeletonCard'  // Assuming this compo
 import { ErrorDisplay } from '@/components/ErrorDisplay'  // Assuming this component exists for error display
 import { Order } from '@/types/order'
 import { getAllOrders } from '@/utils/api/orderApi'
-// import { AxiosError } from 'axios'
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([])  // Orders state to hold the fetched orders
