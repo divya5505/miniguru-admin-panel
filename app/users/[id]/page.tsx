@@ -98,7 +98,7 @@ export default function UserDetailPage() {
     }
 
     try {
-      const res= await updateUserDetails(user.id, updatesToUser);
+      const res= await updateUserDetails(updatedUser.id, updatesToUser);
       console.log(res)
       setIsEditing(false)
     } catch (error) {
